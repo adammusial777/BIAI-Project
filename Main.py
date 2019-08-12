@@ -30,55 +30,80 @@ class UI:
 class FileReader:
     pass
 
-class MovementObject:
-    def movement(self):
-        pass
 
 
+class GameObject:
+    def __init__(self):
+        self.componentsList=[]
+        self.position=Position()
 
+    def Update(self):
+        for component in self.componentsList:
+            component.OnUpdate(self)
+
+    def AddComponent(self, newComponent):
+        self.componentsList.append(newComponent)
+
+class Position:
+    def __init__(self):
+        self.x=0.0
+        self.y=0.0
+
+
+ticksLastFrame=0.0
+def DeltaTime():
+    global ticksLastFrame
+    t = pygame.time.get_ticks()
+    # deltaTime in seconds.
+    deltaTime = (t - ticksLastFrame) / 1000.0
+    ticksLastFrame = t
+    return deltaTime
 
         
-class Player(MovementObject):
-    pass
+class PlayerController:
+    def __init__(self):
+        self.speed=100
 
-class Enemy(MovementObject):
+    def OnUpdate(self, gameObject):
+        keys = pygame.key.get_pressed()
+        speedByTime=self.speed*DeltaTime()
+
+        if keys[pygame.K_LEFT]:
+            gameObject.position.x-=speedByTime
+        if keys[pygame.K_RIGHT]:
+            gameObject.position.x+=speedByTime
+        if keys[pygame.K_UP]:
+            gameObject.position.y-=speedByTime
+        if keys[pygame.K_DOWN]:
+            gameObject.position.y+=speedByTime
+
+
+class EnemyController:
     pass
 
 class GameManager:
     def Start(self):
         pygame.init()
         DISPLAY_SURFACE = pygame.display.set_mode((500, 500))
-        pygame.display.set_caption('Hello World!')
+        pygame.display.set_caption('The worlds hardest game GA edition')
         x=50
         y=50
         width=40
         height=40
         speed=100
-        getTicksLastFrame=0
+
+        player=GameObject()
+        player.AddComponent(PlayerController())
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-            keys = pygame.key.get_pressed()
-
-            t = pygame.time.get_ticks()
-            # deltaTime in seconds.
-            deltaTime = (t - getTicksLastFrame) / 1000.0
-            getTicksLastFrame = t
-            speedByTime=speed*deltaTime
-            print(deltaTime)
-            if keys[pygame.K_LEFT]:
-                x-=speedByTime
-            if keys[pygame.K_RIGHT]:
-                x+=speedByTime
-            if keys[pygame.K_UP]:
-                y-=speedByTime
-            if keys[pygame.K_DOWN]:
-                y+=speedByTime
+            player.Update()
             DISPLAY_SURFACE.fill((0,0,0))
-            pygame.draw.rect(DISPLAY_SURFACE,(255,0,0), (x,y,width,height))
+            pygame.draw.rect(DISPLAY_SURFACE,(255,0,0), (player.position.x,player.position.y,width,height))
             pygame.display.update()
-            
+
+    
 game=GameManager()
 game.Start()
