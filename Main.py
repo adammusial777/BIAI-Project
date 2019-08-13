@@ -36,32 +36,58 @@ class GameObject:
     def __init__(self):
         self.componentsList=[]
         self.position=Position()
+        self.collider=Collider(0,0, self.position)
+        #print(self.position)
 
-    def Update(self):
+    def Update(self, DISPLAY_SURFACE):
         for component in self.componentsList:
             component.OnUpdate(self)
+        self.collider.position=self.position
+        for gameObject in gameObjects:
+            if self.collider.CheckCollision(gameObject.collider):
+                self.Draw(DISPLAY_SURFACE, 255,0,0)
+            else:
+                self.Draw(DISPLAY_SURFACE, 0,255,0)
+
 
     def AddComponent(self, newComponent):
         self.componentsList.append(newComponent)
 
+    def GetComponent(self, component):
+        pass
+
+    def SetCollider(self, collider):
+        self.collider=collider
+
     def OnCollision(self):
         pass
 
-    def Draw(self):
-        pass
+    def Draw(self, DISPLAY_SURFACE, r, g, b):
+        pygame.draw.rect(DISPLAY_SURFACE,(r,g,b), (self.position.x,self.position.y,40,40))
+
+
+
+
+
 
 class Position:
     def __init__(self):
         self.x=0.0
         self.y=0.0
 
+
+
+
+
 class Collider:
-    def __init__(self, width, height):
+    def __init__(self, width, height, position):
+        self.position=position
         self.width=width
         self.height=height
 
-    def CheckCollision(self):
-        pass
+    def CheckCollision(self, other):
+        return not (other.position.x + other.width< self.position.x or other.position.x > self.position.x+ self.width or other.position.y - other.height> self.position.y   or other.position.y< self.position.y-self.height)
+
 
     
 
@@ -117,8 +143,7 @@ class EnemyController:
 
     def OnUpdate(self, gameObject):
         self.__Movement(gameObject)
-
-
+gameObjects=[]
 class GameManager:
     def __init__(self):
         pass
@@ -132,11 +157,18 @@ class GameManager:
         width=40
         height=40
         global deltaTime
+        global gameObjects
 
         player=GameObject()
         player.AddComponent(PlayerController(100, False))
         enemy=GameObject()
         enemy.AddComponent(EnemyController())
+        
+        player.SetCollider(Collider(width, height, player.position))
+        enemy.SetCollider(Collider(width, height, enemy.position))
+
+        gameObjects.append(player)
+        gameObjects.append(enemy)
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -144,12 +176,11 @@ class GameManager:
                     sys.exit()
 
             deltaTime=DeltaTime()        
-
-            player.Update()
-            enemy.Update()
             DISPLAY_SURFACE.fill((0,0,0))
-            pygame.draw.rect(DISPLAY_SURFACE,(255,0,0), (player.position.x,player.position.y,width,height))
-            pygame.draw.rect(DISPLAY_SURFACE,(0,255,0), (enemy.position.x,enemy.position.y,width,height))
+            player.Update(DISPLAY_SURFACE)
+            enemy.Update(DISPLAY_SURFACE)
+              #  pygame.draw.rect(DISPLAY_SURFACE,(255,0,0), (player.position.x,player.position.y,width,height))
+           # pygame.draw.rect(DISPLAY_SURFACE,(0,255,0), (enemy.position.x,enemy.position.y,width,height))
             pygame.display.update()
 
     
