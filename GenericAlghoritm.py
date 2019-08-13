@@ -1,19 +1,23 @@
 import random
 
-def PopulationInit():
-    pass
+class GeneticAlghoritm:
+    def __init__(self):
+        pass
 
-def Mutate():
-    pass
+    def PopulationInit(self):
+        pass
 
-def Crossover():
-    pass
+    def Mutate(self):
+        pass
 
-def Selection():
-    pass
+    def Crossover(self):
+        pass
 
-def TheBestSelection():
-    pass
+    def Selection(self):
+        pass
+
+    def TheBestSelection(self):
+        pass
 
 class Chromosome:
     def __init__(self, genes, rating):

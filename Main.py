@@ -7,8 +7,7 @@ class Point:
 
 
 
-class Bound:
-    pass
+
 
 class Board:
     pass
@@ -31,6 +30,13 @@ class FileReader:
     pass
 
 
+
+class Bound:
+    pass
+
+
+class Level:
+    pass
 
 class GameObject:
     def __init__(self):
@@ -121,9 +127,14 @@ class PlayerController:
         if keys[pygame.K_DOWN]:
             gameObject.position.y+=speedByTime
 
+    def __MovementComputer(self, gameObject, offsetVector):
+        pass
 
     def OnUpdate(self, gameObject):
-        self.__Movement(gameObject)
+        if self.isComputer:
+            self.__MovementComputer(gameObject,2)
+        else:
+            self.__Movement(gameObject)
 
 
 class EnemyController:
@@ -143,6 +154,12 @@ class EnemyController:
 
     def OnUpdate(self, gameObject):
         self.__Movement(gameObject)
+
+
+
+
+
+
 gameObjects=[]
 class GameManager:
     def __init__(self):
