@@ -1,4 +1,4 @@
-import GenericAlghoritm as GA
+import GeneticAlgorithm as GA
 from GameManager import *
 from DeltaTime import *
 

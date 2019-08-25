@@ -1,33 +1,27 @@
 import random
 import Position as Pos
 
-class GeneticAlghoritm:
-    def __init__(self):
-        pass
-
-    def Mutate(self):
-        pass
-
-    def Crossover(self):
-        pass
-
-    def Selection(self):
-        pass
-
-    def TheBestSelection(self):
-        pass
-
 class Chromosome:
+    genesIterator=0
+    genesNumber=100
+
+    @staticmethod
+    def UpdateIterator():
+        Chromosome.genesIterator+=1
+        if Chromosome.genesIterator == Chromosome.genesNumber:
+            Chromosome.genesIterator=0
+
     def __init__(self):
         self.genes=[] #jako lista genów (gen jako pozycja? zestaw genów jako trasa pozycji do celu?)
-        self.genesNumber=20
         self.rating= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
-        self.PopulationInit(self.genesNumber)
+        self.PopulationInit(Chromosome.genesNumber)
 
     def PopulationInit(self, number):
-        position=Pos.Position(0,0)
+        
         for i in range(number):
+            position=Pos.Position(0,0)
             randomValX=random.random()
+            #print(randomValX)
             if randomValX<0.4:
                 position.x=-1
             elif randomValX<0.6:
@@ -45,6 +39,6 @@ class Chromosome:
 
             self.genes.append(position)
 
-    def IncrementGenes(self):
+"""     def IncrementGenes(self):
         genesNumber=5
-        self.PopulationInit(genesNumber)
+        self.PopulationInit(genesNumber) """

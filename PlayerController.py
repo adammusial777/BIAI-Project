@@ -1,14 +1,13 @@
 import pygame
 from DeltaTime import *
-from GenericAlghoritm import *
+from Chromosome import Chromosome
 
 
 class PlayerController:
-    def __init__(self,speed, isComputer):
-        self.speed=speed
-        self.isComputer=isComputer
+    speed=100
+
+    def __init__(self):
         self.chromosome=Chromosome()
-        self.movementIterator=0
         self.coins=0
         self.isDied=False
 
@@ -24,14 +23,9 @@ class PlayerController:
         if keys[pygame.K_DOWN]:
             gameObject.position.y+=speedByTime
 
-    def __MovementComputer(self, gameObject, offsetVector):
-        pass
-
     def __EndOfPlayer(self):
-        return True if self.movementIterator==self.chromosome.genes.count or self.isDied else False
+        pass
+        #return True if self.movementIterator==self.chromosome.genes.count or self.isDied else False
 
     def OnUpdate(self, gameObject):
-        if self.isComputer:
-            self.__MovementComputer(gameObject,2)
-        else:
             self.__Movement(gameObject)

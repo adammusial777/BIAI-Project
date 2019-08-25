@@ -3,9 +3,12 @@ from pygame.locals import *
 from DeltaTime import *
 from Position import Position
 from PlayerController import PlayerController
+from PlayerComputer import PlayerComputer
 from EnemyController import EnemyController
 from GameObject import GameObject
 from Collider import Collider
+from Chromosome import Chromosome
+from GeneticAlgorithm import geneticAlgorithm
 
 gameObjects=[]
 enemies=[]
@@ -17,7 +20,8 @@ class GameManager:
 
     def Start(self):
         pygame.init()
-        DISPLAY_SURFACE = pygame.display.set_mode((500, 500))
+        self.LearnGame()
+    """DISPLAY_SURFACE = pygame.display.set_mode((500, 500))
         pygame.display.set_caption('The worlds hardest game GA edition')
         width=40
         height=40
@@ -27,28 +31,26 @@ class GameManager:
         player=GameObject(Position(0,0), DISPLAY_SURFACE)
         player.AddComponent(PlayerController(100, False))
         player.SetCollider(Collider(width, height, player.position))
-        while True:
+         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
 
-            #deltaTime=DeltaTime()
-            #print(deltaTime) 
+            
+            #self.PlayGame()
+            
             deltaTime.__call__()
 
             DISPLAY_SURFACE.fill((0,0,0))  
             player.Update(DISPLAY_SURFACE)
             player.Draw(0,0, 255)
+
             for enemy in enemies:
                 enemy.Update(DISPLAY_SURFACE) 
                 enemy.collider.OnCollision(enemy, player.collider)
 
-            #player.Update(DISPLAY_SURFACE)
-            #enemy.Update(DISPLAY_SURFACE)
-            #pygame.draw.rect(DISPLAY_SURFACE,(255,0,0), (player.position.x,player.position.y,width,height))
-            #pygame.draw.rect(DISPLAY_SURFACE,(0,255,0), (enemy.position.x,enemy.position.y,width,height))
-            pygame.display.update()
+            pygame.display.update() """
 
     def __loadLevel(self, DISPLAY_SURFACE):
         width=40
@@ -73,3 +75,48 @@ class GameManager:
         enemies.append(enemy2)
         enemies.append(enemy3)
         enemies.append(enemy4)
+
+
+    def LoadPlayers(self, DISPLAY_SURFACE):
+        width=40
+        lenght=40
+        players=[]
+        for i in range(geneticAlgorithm.chromosomeNumber):
+            newPlayer=GameObject(Position(0,0), DISPLAY_SURFACE)
+            newPlayer.SetCollider(Collider(width, lenght, newPlayer.position))
+            newPlayer.AddComponent(PlayerComputer())
+            players.append(newPlayer)
+        
+        return players
+
+    def LearnGame(self):
+        DISPLAY_SURFACE = pygame.display.set_mode((500, 500))
+        pygame.display.set_caption('The worlds hardest game GA edition')
+        global enemies
+        self.LoadPlayers
+
+        players=self.LoadPlayers(DISPLAY_SURFACE)
+        self.__loadLevel(DISPLAY_SURFACE)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            deltaTime.__call__()
+            DISPLAY_SURFACE.fill((0,0,0))  
+            for player in players:
+                player.Update(DISPLAY_SURFACE)
+                player.Draw(0,0, 255)
+                for enemy in enemies:
+                    enemy.collider.OnCollision(enemy, player.collider)
+
+            for enemy in enemies:
+                enemy.Update(DISPLAY_SURFACE) 
+
+            Chromosome.UpdateIterator()
+            pygame.display.update()
+
+    def PlayGame(self):
+        pass
