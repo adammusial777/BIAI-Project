@@ -2,9 +2,9 @@ from pygame import *
 from pygame.locals import *
 from DeltaTime import *
 from Position import Position
-from PlayerController import PlayerController
+from Player import Player
 from PlayerComputer import PlayerComputer
-from EnemyController import EnemyController
+from Enemy import Enemy
 from Collider import Collider
 from Chromosome import Chromosome
 from GeneticAlgorithm import geneticAlgorithm
@@ -23,10 +23,10 @@ class GameManager:
         width=40
         height=40
 
-        enemy1=EnemyController((0,255,0), Position(100,100), Collider(width,height))
-        enemy2=EnemyController((0,255,0),Position(100,200), Collider(width,height))
-        enemy3=EnemyController((0,255,0),Position(100,300), Collider(width,height))
-        enemy4=EnemyController((0,255,0),Position(100,400), Collider(width,height))
+        enemy1=Enemy((0,255,0), Position(100,100), Collider(width,height))
+        enemy2=Enemy((0,255,0),Position(100,200), Collider(width,height))
+        enemy3=Enemy((0,255,0),Position(100,300), Collider(width,height))
+        enemy4=Enemy((0,255,0),Position(100,400), Collider(width,height))
         GameManager.enemies.append(enemy1)
         GameManager.enemies.append(enemy2)
         GameManager.enemies.append(enemy3)

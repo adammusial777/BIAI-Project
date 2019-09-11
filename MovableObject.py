@@ -1,5 +1,3 @@
-import Collider
-
 class MovableObject:
     def __init__(self, color, startPosition, collider):
         self.color=color

@@ -1,10 +1,10 @@
-import PlayerController
+import Player
 from DeltaTime import *
 from Chromosome import Chromosome
 
-class PlayerComputer(PlayerController.PlayerController):
+class PlayerComputer(Player.Player):
     def __init__(self, color, startPosition, collider):
-        PlayerController.PlayerController.__init__(self, color, startPosition, collider)
+        Player.Player.__init__(self, color, startPosition, collider)
 
     def __Movement(self):
        # print(self.chromosome.genes[Chromosome.genesIterator].x)

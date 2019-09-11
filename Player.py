@@ -4,7 +4,7 @@ from MovableObject import *
 from Chromosome import Chromosome
 
 
-class PlayerController(MovableObject):
+class Player(MovableObject):
     speed=100
 
     def __init__(self, color ,startPosition, collider):

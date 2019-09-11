@@ -1,7 +1,7 @@
 from DeltaTime import *
 from MovableObject import *
 
-class EnemyController(MovableObject):
+class Enemy(MovableObject):
     def __init__(self, color , startPosition, collider):
         self.speed=200
         self.leftDirection=False
