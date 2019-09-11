@@ -3,16 +3,18 @@ from DeltaTime import *
 from Chromosome import Chromosome
 
 class PlayerComputer(PlayerController.PlayerController):
-    def __init__(self):
-        PlayerController.PlayerController.__init__(self)
+    def __init__(self, color, startPosition, collider):
+        PlayerController.PlayerController.__init__(self, color, startPosition, collider)
 
-    def __Movement(self, gameObject):
+    def __Movement(self):
        # print(self.chromosome.genes[Chromosome.genesIterator].x)
         speedByTime=self.speed* deltaTime.deltaTime
-        gameObject.position.x+=speedByTime*self.chromosome.genes[Chromosome.genesIterator].x
-        gameObject.position.y+=speedByTime*self.chromosome.genes[Chromosome.genesIterator].y
+        self.position.x+=speedByTime*self.chromosome.genes[Chromosome.genesIterator].x
+        self.position.y+=speedByTime*self.chromosome.genes[Chromosome.genesIterator].y
+        
 
 
 
-    def OnUpdate(self, gameObject):
-        self.__Movement(gameObject)
+    def OnUpdate(self):
+        self.__Movement()
+        self.collider.position=self.position

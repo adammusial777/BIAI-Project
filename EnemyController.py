@@ -1,20 +1,22 @@
 from DeltaTime import *
+from MovableObject import *
 
-
-class EnemyController:
-    def __init__(self):
+class EnemyController(MovableObject):
+    def __init__(self, color , startPosition, collider):
         self.speed=200
         self.leftDirection=False
+        MovableObject.__init__(self,color, startPosition, collider)
 
-    def __Movement(self, gameObject):
-        if gameObject.position.x>=450 and not self.leftDirection:
+    def __Movement(self):
+        if self.position.x>=450 and not self.leftDirection:
             self.speed*=-1
             self.leftDirection=True
-        elif gameObject.position.x<=0 and self.leftDirection:
+        elif self.position.x<=0 and self.leftDirection:
             self.speed*=-1
             self.leftDirection=False
         speedByTime=self.speed*deltaTime.deltaTime
-        gameObject.position.x+=speedByTime
+        self.position.x+=speedByTime
 
-    def OnUpdate(self, gameObject):
-        self.__Movement(gameObject)
+    def OnUpdate(self):
+        self.__Movement()
+        self.collider.position=self.position
