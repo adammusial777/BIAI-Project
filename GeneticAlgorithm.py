@@ -1,5 +1,4 @@
 import random
-import Position as Pos
 from Chromosome import *
 
 class GeneticAlgorithm:
