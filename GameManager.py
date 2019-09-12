@@ -27,16 +27,16 @@ class GameManager:
         self.PlayGame()
 
     def LoadLevel(self):
-        enemyColliderWidth = 25
-        enemyColliderHeight = 25
+        enemyColliderWidth = 12
+        enemyColliderHeight = 12
 
-        enemy1 = Enemy((0, 0, 255), 5.5 * GameManager.tileSize - enemyColliderWidth/2, 5.5 * GameManager.tileSize, enemyColliderWidth,
+        enemy1 = Enemy((0, 0, 255), 5.5 * GameManager.tileSize - enemyColliderWidth, 5.5 * GameManager.tileSize, enemyColliderWidth,
                        enemyColliderHeight, False)
-        enemy2 = Enemy((0, 0, 255), 14.5 * GameManager.tileSize + enemyColliderWidth/2, 6.5 * GameManager.tileSize, enemyColliderWidth,
+        enemy2 = Enemy((0, 0, 255), 14.5 * GameManager.tileSize + enemyColliderWidth, 6.5 * GameManager.tileSize, enemyColliderWidth,
                        enemyColliderHeight, False)
-        enemy3 = Enemy((0, 0, 255), 5.5 * GameManager.tileSize - enemyColliderWidth/2, 7.5 * GameManager.tileSize, enemyColliderWidth,
+        enemy3 = Enemy((0, 0, 255), 5.5 * GameManager.tileSize - enemyColliderWidth, 7.5 * GameManager.tileSize, enemyColliderWidth,
                        enemyColliderHeight, False)
-        enemy4 = Enemy((0, 0, 255), 14.5 * GameManager.tileSize + enemyColliderWidth/2, 8.5 * GameManager.tileSize, enemyColliderWidth,
+        enemy4 = Enemy((0, 0, 255), 14.5 * GameManager.tileSize + enemyColliderWidth, 8.5 * GameManager.tileSize, enemyColliderWidth,
                        enemyColliderHeight, False)
         GameManager.enemies.append(enemy1)
         GameManager.enemies.append(enemy2)
