@@ -4,6 +4,7 @@ import Position as Pos
 class Chromosome:
     genesIterator=0
     genesNumber=100
+    chromosomes=[]
 
     @staticmethod
     def UpdateIterator():
@@ -13,7 +14,10 @@ class Chromosome:
 
     def __init__(self):
         self.genes=[] #jako lista genów (gen jako pozycja? zestaw genów jako trasa pozycji do celu?)
-        self.rating= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
+        self.fitness= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
+        
+        Chromosome.chromosomes.append(self)
+        
         self.PopulationInit(Chromosome.genesNumber)
 
     def PopulationInit(self, number):
@@ -38,6 +42,9 @@ class Chromosome:
                 position.y=1
 
             self.genes.append(position)
+
+    def  CalculateFitness(self):
+        pass
 
 """     def IncrementGenes(self):
         genesNumber=5
