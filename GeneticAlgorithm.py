@@ -40,5 +40,5 @@ class GeneticAlgorithm:
     def TheBestSelection(self):
         pass
 
-geneticAlgorithm=GeneticAlgorithm()
 
+geneticAlgorithm = GeneticAlgorithm()
