@@ -15,6 +15,7 @@ class Player(GameObject):
         self.coins = 0
         self.isDied = False
         super(Player, self).__init__(color, x, y, width, height)
+        self.startPosition = (x, y)
 
     def Movement(self):
         keys = pygame.key.get_pressed()
@@ -33,7 +34,7 @@ class Player(GameObject):
             if(self.rect.colliderect(obj.rect)):
                 tag = obj.collider.tag
                 if(tag == "Enemy"):
-                    pass
+                    self.Kill()
                 if(tag == "FinishArea"):
                     pass
                 if(tag == "Wall"):
@@ -72,6 +73,13 @@ class Player(GameObject):
     def EndOfPlayer(self):
         pass
         # return True if self.movementIterator==self.chromosome.genes.count or self.isDied else False
+
+    def Kill(self):
+        self.ResetPosition()
+
+    def ResetPosition(self):
+        self.rect.x = self.startPosition[0]
+        self.rect.y = self.startPosition[1]
 
     def OnUpdate(self):
         self.Movement()
