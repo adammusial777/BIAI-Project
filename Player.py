@@ -66,12 +66,6 @@ class Player(GameObject):
                         self.rect.bottom = obj.rect.top
                         break
 
-    # if collider.tag == "Wall":
-    #     if player_transform.rect.left < transform.rect.right and player_transform.rect.left > transform.rect.left:
-    #         player_transform.rect.left = transform.rect.right
-    #     elif player_transform.rect.right > transform.rect.left and player_transform.rect.right < transform.rect.right:
-    #         player_transform.rect.right = transform.rect.left
-
     def Render(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
 
