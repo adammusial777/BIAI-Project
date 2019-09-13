@@ -1,4 +1,5 @@
 import random
+import copy
 from Chromosome import *
 
 class GeneticAlgorithm:
@@ -7,15 +8,18 @@ class GeneticAlgorithm:
         self.chromosomeNumber=100
         self.fitnessSum=0
 
-    def Mutate(self):
+    def Update(self):
         pass
-
-
 
     def Fitness(self):
         for chrom in Chromosome.chromosomes:
             chrom.CalculateFitness()
 
+    def CalculateFitnessSum(self):
+        self.fitnessSum=0
+        for chrom in Chromosome.chromosomes:
+            self.fitnessSum=chrom.fitness
+    
     def SelectParent(self):
         rand = random.uniform(0,self.fitnessSum)
         runningSum=0
@@ -24,17 +28,21 @@ class GeneticAlgorithm:
             if(runningSum>rand):
                 return Chromosome.chromosomes[i]
 
-    def CalculateFitnessSum(self):
-        self.fitnessSum=0
+
+    def Selection(self):
+        newChromosomes=[]
         for chrom in Chromosome.chromosomes:
-            self.fitnessSum=chrom.fitness
-         
+            parent=self.SelectParent()
+            newChromosomes.append(copy.deepcopy(parent))
+
+        Chromosome.chromosomes=newChromosomes
+
+    def Mutate(self):
+        pass
 
     def Crossover(self):
         pass
 
-    def Selection(self):
-        pass
 
     def TheBestSelection(self):
         pass
