@@ -116,6 +116,8 @@ class GameManager:
                 tile.Render(DISPLAY_SURFACE)
 
             for player in GameManager.players:
+                prevPos=(player.rect.x,player.rect.y)
+                player.previousPosition=prevPos
                 player.OnUpdate()
                 player.ResolveCollisions(GameManager.collidingObjects)
                 # for enemy in GameManager.enemies:

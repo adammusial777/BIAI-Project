@@ -16,6 +16,7 @@ class Player(GameObject):
         self.isDied = False
         super(Player, self).__init__(color, x, y, width, height)
         self.startPosition = (x, y)
+        self.previousPosition=self.startPosition
 
     def Movement(self):
         keys = pygame.key.get_pressed()
@@ -38,34 +39,38 @@ class Player(GameObject):
                 if(tag == "FinishArea"):
                     pass
                 if(tag == "Wall"):
-                    if self.rect.left < obj.rect.right and self.rect.left > obj.rect.left and self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
-                        self.rect.left = obj.rect.right
-                        self.rect.top = obj.rect.bottom
-                        break
-                    elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right and self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
-                        self.rect.right = obj.rect.left
-                        self.rect.top = obj.rect.bottom
-                        break
-                    elif self.rect.left < obj.rect.right and self.rect.left > obj.rect.left and self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
-                        self.rect.left = obj.rect.right
-                        self.rect.bottom = obj.rect.top
-                        break
-                    elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right and self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
-                        self.rect.right = obj.rect.left
-                        self.rect.bottom = obj.rect.top
-                        break
-                    elif self.rect.left < obj.rect.right and self.rect.left > obj.rect.left:
-                        self.rect.left = obj.rect.right
-                        break
-                    elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right:
-                        self.rect.right = obj.rect.left
-                        break
-                    elif self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
-                        self.rect.top = obj.rect.bottom
-                        break
-                    elif self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
-                        self.rect.bottom = obj.rect.top
-                        break
+                    self.rect.x=self.previousPosition[0]
+                    self.rect.y=self.previousPosition[1]
+                    # if self.rect.left < obj.rect.right and self.rect.left > obj.rect.left and self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
+                    #     self.rect.left = obj.rect.right
+                    #     self.rect.top = obj.rect.bottom
+                    #     break
+                    # elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right and self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
+                    #     self.rect.right = obj.rect.left
+                    #     self.rect.top = obj.rect.bottom
+                    #     break
+                    # elif self.rect.left < obj.rect.right and self.rect.left > obj.rect.left and self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
+                    #     self.rect.left = obj.rect.right
+                    #     self.rect.bottom = obj.rect.top
+                    #     break
+                    # elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right and self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
+                    #     self.rect.right = obj.rect.left
+                    #     self.rect.bottom = obj.rect.top
+                    #     break
+                    # elif self.rect.left < obj.rect.right and self.rect.left > obj.rect.left:
+                    #     self.rect.left = obj.rect.right
+                    #     break
+                    # elif self.rect.right > obj.rect.left and self.rect.right < obj.rect.right:
+                    #     self.rect.right = obj.rect.left
+                    #     break
+                    # elif self.rect.top < obj.rect.bottom and self.rect.top > obj.rect.top:
+                    #     self.rect.top = obj.rect.bottom
+                    #     break
+                    # elif self.rect.bottom > obj.rect.top and self.rect.bottom < obj.rect.bottom:
+                    #     self.rect.bottom = obj.rect.top
+                    #     break
+
+                    ###ctrl + /
 
     def Render(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
