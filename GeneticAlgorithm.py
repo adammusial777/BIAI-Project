@@ -9,8 +9,10 @@ class GeneticAlgorithm:
         self.fitnessSum=0
 
     def Update(self):
-        pass
-
+        self.Fitness()
+        self.CalculateFitnessSum()
+        self.Selection()
+        
     def Fitness(self):
         for chrom in Chromosome.chromosomes:
             chrom.CalculateFitness()
@@ -28,7 +30,6 @@ class GeneticAlgorithm:
             if(runningSum>rand):
                 return Chromosome.chromosomes[i]
 
-
     def Selection(self):
         newChromosomes=[]
         for chrom in Chromosome.chromosomes:
@@ -43,8 +44,10 @@ class GeneticAlgorithm:
     def Crossover(self):
         pass
 
-
     def TheBestSelection(self):
+        pass
+
+    def TheBestChromosome(self):
         pass
 
 

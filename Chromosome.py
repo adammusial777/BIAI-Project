@@ -6,6 +6,7 @@ class Chromosome:
     genesNumber=100
     chromosomes=[]
     mutationRate=0.7
+    targetAreas=[]
 
     @staticmethod
     def UpdateIterator():
@@ -16,7 +17,12 @@ class Chromosome:
     def __init__(self):
         self.genes=[] #jako lista genów (gen jako pozycja? zestaw genów jako trasa pozycji do celu?)
         self.fitness= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
-        
+        self.isAlive=True
+        self.killed=False
+        self.winner=False
+        self.iteratorOfAreas=0
+
+
         Chromosome.chromosomes.append(self)
         
         self.PopulationInit(Chromosome.genesNumber)
@@ -53,8 +59,20 @@ class Chromosome:
                 gen=self.GetRandomDirection()
 
 
-    def  CalculateFitness(self):
-        pass
+    def  CalculateFitness(self, gameObject):
+        distanceToTarget=0
+        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(gameObject):
+            self.fitness+=self.iteratorOfAreas/Chromosome.targetAreas.__len__()
+            self.iteratorOfAreas+=1
+            if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
+                self.winner=True
+        else:
+            distanceToTarget= 1/Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(gameObject)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
+            if self.killed:
+                distanceToTarget*=0.9
+            self.fitness=distanceToTarget   
+
+        
 
 """     def IncrementGenes(self):
         genesNumber=5
