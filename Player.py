@@ -18,17 +18,22 @@ class Player(GameObject):
         self.startPosition = (x, y)
         self.previousPosition=self.startPosition
 
-    def Movement(self):
+    def Movement(self, collidingObjects):
         keys = pygame.key.get_pressed()
         speedByTime = self.speed * DeltaTime.GetDeltaTime()
+
         if keys[pygame.K_LEFT]:
             self.rect.x -= speedByTime
         if keys[pygame.K_RIGHT]:
             self.rect.x += speedByTime
+        self.ResolveCollisions(collidingObjects)
+        prevPos=(self.rect.x,self.rect.y)
+        self.previousPosition=prevPos
         if keys[pygame.K_UP]:
             self.rect.y -= speedByTime
         if keys[pygame.K_DOWN]:
             self.rect.y += speedByTime
+        self.ResolveCollisions(collidingObjects)
 
     def ResolveCollisions(self, colliders):
         for obj in colliders:
@@ -86,5 +91,5 @@ class Player(GameObject):
         self.rect.x = self.startPosition[0]
         self.rect.y = self.startPosition[1]
 
-    def OnUpdate(self):
-        self.Movement()
+    def OnUpdate(self, collidingObjects):
+        self.Movement(collidingObjects)

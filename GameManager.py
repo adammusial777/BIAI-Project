@@ -118,8 +118,9 @@ class GameManager:
             for player in GameManager.players:
                 prevPos=(player.rect.x,player.rect.y)
                 player.previousPosition=prevPos
-                player.OnUpdate()
-                player.ResolveCollisions(GameManager.collidingObjects)
+                player.OnUpdate(GameManager.collidingObjects)
+                #player.ResolveCollisions(GameManager.collidingObjects)
+                
                 # for enemy in GameManager.enemies:
                 #     if enemy.collider.OnCollision(enemy, player.collider):
                 #         player.color = (255, 0, 0)
