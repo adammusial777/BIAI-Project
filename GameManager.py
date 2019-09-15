@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from DeltaTime import DeltaTime
 from Player import Player
+from PlayerComputer import PlayerComputer
 #from PlayerComputer import PlayerComputer
 from Enemy import Enemy
 from Collider import Collider
@@ -23,8 +24,8 @@ class GameManager:
 
     def Start(self):
         pygame.init()
-        # self.LearnGame()
-        self.PlayGame()
+        self.LearnGame()
+        #self.PlayGame()
 
     def LoadLevel(self):
         enemyColliderWidth = 12
@@ -59,18 +60,26 @@ class GameManager:
         #         0, 0), Collider(playerColliderWidth, playerColliderHeight), surface)
         #     GameManager.players.append(newPlayer)
 
+    def LoadPlayersComputer(self):
+        playerColliderWidth = 25
+        playerColliderHeight = 25
+        for i in range(geneticAlgorithm.chromosomeNumber):
+            newPlayer = PlayerComputer((255, 0, 0), 2.5 * GameManager.tileSize - playerColliderWidth/2, 5.5 * GameManager.tileSize - playerColliderHeight/2,
+                playerColliderWidth, playerColliderHeight)
+            GameManager.players.append(newPlayer)
+
     def LearnGame(self):
         DISPLAY_SURFACE = pygame.display.set_mode((800, 600))
         pygame.display.set_caption('The worlds hardest game GA edition')
 
-        self.LoadPlayers(DISPLAY_SURFACE)
-        self.LoadLevel(DISPLAY_SURFACE)
+        self.LoadPlayersComputer()
+        self.LoadLevel()
+
 
         gameIsRunning = True
         while gameIsRunning:
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    pygame.quit()
                     gameIsRunning = False
 
             DeltaTime.GetDeltaTime()
@@ -80,13 +89,10 @@ class GameManager:
                 tile.Render(DISPLAY_SURFACE)
 
             for player in GameManager.players:
-                player.OnUpdate()
-                for enemy in GameManager.enemies:
-                    if enemy.collider.OnCollision(enemy, player.collider):
-                        player.color = (255, 0, 0)
-                        break
-                    else:
-                        player.color = (0, 0, 255)
+                prevPos=(player.rect.x,player.rect.y)
+                player.previousPosition=prevPos
+                player.OnUpdate(GameManager.collidingObjects)
+                player.ResolveCollisions(GameManager.collidingObjects)
                 player.Render(DISPLAY_SURFACE)
 
             for enemy in GameManager.enemies:
@@ -95,6 +101,45 @@ class GameManager:
 
             Chromosome.UpdateIterator()
             pygame.display.update()
+            DeltaTime.clock.tick(DeltaTime.framerate)
+
+
+    # def LearnGame(self):
+    #     DISPLAY_SURFACE = pygame.display.set_mode((800, 600))
+    #     pygame.display.set_caption('The worlds hardest game GA edition')
+
+    #     self.LoadPlayers(DISPLAY_SURFACE)
+    #     self.LoadLevel(DISPLAY_SURFACE)
+
+    #     gameIsRunning = True
+    #     while gameIsRunning:
+    #         for event in pygame.event.get():
+    #             if event.type == QUIT:
+    #                 pygame.quit()
+    #                 gameIsRunning = False
+
+    #         DeltaTime.GetDeltaTime()
+    #         DISPLAY_SURFACE.fill((0, 0, 0))
+
+    #         for tile in GameManager.board:
+    #             tile.Render(DISPLAY_SURFACE)
+
+    #         for player in GameManager.players:
+    #             player.OnUpdate()
+    #             for enemy in GameManager.enemies:
+    #                 if enemy.collider.OnCollision(enemy, player.collider):
+    #                     player.color = (255, 0, 0)
+    #                     break
+    #                 else:
+    #                     player.color = (0, 0, 255)
+    #             player.Render(DISPLAY_SURFACE)
+
+    #         for enemy in GameManager.enemies:
+    #             enemy.OnUpdate()
+    #             enemy.Render(DISPLAY_SURFACE)
+
+    #         Chromosome.UpdateIterator()
+    #         pygame.display.update()
 
     def PlayGame(self):
         DISPLAY_SURFACE = pygame.display.set_mode((798, 600))
@@ -120,7 +165,7 @@ class GameManager:
                 player.previousPosition=prevPos
                 player.OnUpdate(GameManager.collidingObjects)
                 #player.ResolveCollisions(GameManager.collidingObjects)
-                
+
                 # for enemy in GameManager.enemies:
                 #     if enemy.collider.OnCollision(enemy, player.collider):
                 #         player.color = (255, 0, 0)
