@@ -10,8 +10,11 @@ class GeneticAlgorithm:
 
     def Update(self):
         self.Fitness()
+        Chromosome.chromosomes.sort(key=lambda x: x.fitness)
         self.CalculateFitnessSum()
         self.Selection()
+        self.Mutate()
+        self.NextGenerationGenes()
         
     def Fitness(self):
         for chrom in Chromosome.chromosomes:
@@ -38,17 +41,16 @@ class GeneticAlgorithm:
 
         Chromosome.chromosomes=newChromosomes
 
+    def NextGenerationGenes(self):
+        Chromosome.genesNumber+=10
+        for chrom in Chromosome.chromosomes:
+            chrom.IncreaseGenes()
+
     def Mutate(self):
-        pass
+        for chrom in Chromosome.chromosomes:
+            chrom.MutateGenes()
 
-    def Crossover(self):
-        pass
-
-    def TheBestSelection(self):
-        pass
-
-    def TheBestChromosome(self):
-        pass
-
+    def TheWinnerChromosome(self):
+        return next(x for x in Chromosome.chromosomes if x.winner==True )
 
 geneticAlgorithm = GeneticAlgorithm()

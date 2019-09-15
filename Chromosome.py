@@ -3,7 +3,7 @@ import random
 
 class Chromosome:
     genesIterator=0
-    genesNumber=100
+    genesNumber=30
     chromosomes=[]
     mutationRate=0.7
     targetAreas=[]
@@ -62,18 +62,19 @@ class Chromosome:
     def  CalculateFitness(self, gameObject):
         distanceToTarget=0
         if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(gameObject):
-            self.fitness+=self.iteratorOfAreas/Chromosome.targetAreas.__len__()
+            self.fitness+=self.iteratorOfAreas/Chromosome.targetAreas.__len__()     #lub =
             self.iteratorOfAreas+=1
             if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
                 self.winner=True
         else:
-            distanceToTarget= 1/Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(gameObject)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
+            distanceToTarget= 1/(Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(gameObject)+1)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
             if self.killed:
                 distanceToTarget*=0.9
             self.fitness=distanceToTarget   
 
-        
+    def IncreaseGenes(self):
+        i=self.genes.__len__()
+        for i in range(Chromosome.genesNumber):
+            position = self.GetRandomDirection()
+            self.genes.append(position)
 
-"""     def IncrementGenes(self):
-        genesNumber=5
-        self.PopulationInit(genesNumber) """
