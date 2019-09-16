@@ -27,6 +27,7 @@ class GeneticAlgorithm:
     
     def SelectParent(self):
         rand = random.uniform(0,self.fitnessSum)
+        rand = random.uniform(0,rand)
         runningSum=0
         for i in range(0, Chromosome.chromosomes.__len__(), 1):
             runningSum+=Chromosome.chromosomes[i].fitness
@@ -40,12 +41,12 @@ class GeneticAlgorithm:
             newChromosomes.append(copy.deepcopy(parent))
 
         Chromosome.chromosomes=newChromosomes
-       # print(Chromosome.chromosomes[0].fitness)
 
     def NextGenerationGenes(self):
-        Chromosome.genesNumber+=10
-        for chrom in Chromosome.chromosomes:
-            chrom.IncreaseGenes()
+        if Chromosome.genesNumber<200:
+            Chromosome.genesNumber+=10
+            for chrom in Chromosome.chromosomes:
+                chrom.IncreaseGenes()
 
     def Mutate(self):
         for chrom in Chromosome.chromosomes:

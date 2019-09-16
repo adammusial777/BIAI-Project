@@ -9,7 +9,7 @@ class Enemy(GameObject):
     radius = 12
 
     def __init__(self, color, x, y, width, height, startDirection):
-        self.speed = 400
+        self.speed = 8
         self.leftDirection = startDirection
         self.collider = Collider(self, "Enemy")
         super(Enemy, self).__init__(color, x, y, width, height)
@@ -23,7 +23,7 @@ class Enemy(GameObject):
             self.speed *= -1
             self.rect.x = 580
             self.leftDirection = True
-        speedByTime = self.speed * DeltaTime.GetDeltaTime()
+        speedByTime = self.speed #* DeltaTime.GetDeltaTime()
         self.rect.x += speedByTime
 
     def MoveLeft(self):

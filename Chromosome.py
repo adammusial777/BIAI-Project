@@ -5,7 +5,7 @@ class Chromosome:
     genesIterator=0
     genesNumber=50
     chromosomes=[]
-    mutationRate=0.7
+    mutationRate=0.9
     targetAreas=[]
     chromosomeNumber=100
 
@@ -63,11 +63,10 @@ class Chromosome:
             self.genes.append(position)
 
     def MutateGenes(self):
-        for gen in self.genes:
+        for i in range(self.genes.__len__()):
             rand = random.random()
             if rand> Chromosome.mutationRate:
-                gen=self.GetRandomDirection()
-
+                self.genes[i]=self.GetRandomDirection()
 
     def  CalculateFitness(self):
         distanceToTarget=0.0

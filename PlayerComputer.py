@@ -12,7 +12,7 @@ class PlayerComputer(Player.Player):
         self.chromosome.killed=True
 
     def Movement(self,collidingObjects):
-        speedByTime = self.speed * DeltaTime.GetDeltaTime()
+        speedByTime = self.speed #* DeltaTime.GetDeltaTime()
         self.rect.x += speedByTime * self.chromosome.genes[Chromosome.genesIterator][0]
         self.rect.y += speedByTime * self.chromosome.genes[Chromosome.genesIterator][1]
 

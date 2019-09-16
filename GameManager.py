@@ -11,6 +11,8 @@ from GeneticAlgorithm import geneticAlgorithm
 from BoardReader import BoardReader
 from TargetArea import TargetArea
 
+import time
+
 
 class GameManager:
 
@@ -108,7 +110,7 @@ class GameManager:
                     gameIsRunning = False
             DeltaTime.GetDeltaTime()
             DISPLAY_SURFACE.fill((0, 0, 0))
-
+            #time.sleep(0.5)
             for tile in GameManager.board:
                 tile.Render(DISPLAY_SURFACE)
 

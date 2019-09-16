@@ -12,7 +12,9 @@ class TargetArea(GameObject):
  #           self.areaReached=True
 
     def CalculateDistance(self, rect):
-        return math.hypot(rect.x - self.rect.x, rect.y-self.rect.y)
+        val=math.hypot(rect.x - self.rect.x, rect.y-self.rect.y)
+        #print(val)
+        return val
 
     def Render(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)

@@ -8,7 +8,7 @@ class Player(GameObject):
 
     width = 25
     height = 25
-    speed = 200
+    speed = 4
 
     def __init__(self, color, x, y, width, height):
         self.chromosome = Chromosome()
