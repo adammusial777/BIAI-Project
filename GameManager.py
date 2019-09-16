@@ -121,7 +121,7 @@ class GameManager:
                 if player.chromosome.killed:
                     GameManager.deadPlayers.append(player)
                     player.chromosome.playerEndRect=player.rect
-                player.ResolveCollisions(GameManager.collidingObjects)
+                #player.ResolveCollisions(GameManager.collidingObjects)
                 player.Render(DISPLAY_SURFACE)
 
             for enemy in GameManager.enemies:

@@ -71,19 +71,19 @@ class Chromosome:
     def  CalculateFitness(self):
         distanceToTarget=0.0
         if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(self.playerEndRect):
-            self.fitness=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())     #lub +=
             self.iteratorOfAreas+=1
             if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
                 self.winner=True
-        else:
-            valInTargetArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
-            distaneValToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
-            distanceToTarget= distaneValToTarget * valInTargetArea
-           # print(distaneValToTarget)
-            if self.killed:
-                distanceToTarget*=0.9
-                self.killed=False
-            self.fitness=distanceToTarget   
+            distanceToTarget=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())     #lub +=
+     #   else:
+        valInTargetArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
+        distaneValToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
+        distanceToTarget+= distaneValToTarget * valInTargetArea + (self.iteratorOfAreas)/float(Chromosome.targetAreas.__len__())
+        # print(distaneValToTarget)
+        if self.killed:
+            distanceToTarget*=0.9
+            self.killed=False
+        self.fitness+=distanceToTarget   
 
     def IncreaseGenes(self):
         i=self.genes.__len__()

@@ -14,7 +14,11 @@ class PlayerComputer(Player.Player):
     def Movement(self,collidingObjects):
         speedByTime = self.speed #* DeltaTime.GetDeltaTime()
         self.rect.x += speedByTime * self.chromosome.genes[Chromosome.genesIterator][0]
+        self.ResolveCollisions(collidingObjects)
+        prevPos=(self.rect.x,self.rect.y)
+        self.previousPosition=prevPos
         self.rect.y += speedByTime * self.chromosome.genes[Chromosome.genesIterator][1]
+        self.ResolveCollisions(collidingObjects)
 
     def OnUpdate(self, collidingObjects):
         self.Movement(collidingObjects)

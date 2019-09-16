@@ -15,6 +15,8 @@ class GeneticAlgorithm:
         self.Selection()
         self.Mutate()
         self.NextGenerationGenes()
+        for chrom in Chromosome.chromosomes:
+            chrom.iteratorOfAreas=1
         
     def Fitness(self):
         for chrom in Chromosome.chromosomes:
@@ -27,6 +29,7 @@ class GeneticAlgorithm:
     
     def SelectParent(self):
         rand = random.uniform(0,self.fitnessSum)
+        rand = random.uniform(0,rand)
         rand = random.uniform(0,rand)
         runningSum=0
         for i in range(0, Chromosome.chromosomes.__len__(), 1):
@@ -43,7 +46,7 @@ class GeneticAlgorithm:
         Chromosome.chromosomes=newChromosomes
 
     def NextGenerationGenes(self):
-        if Chromosome.genesNumber<200:
+        if Chromosome.genesNumber<300:
             Chromosome.genesNumber+=10
             for chrom in Chromosome.chromosomes:
                 chrom.IncreaseGenes()
