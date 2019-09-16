@@ -9,6 +9,7 @@ from Collider import Collider
 from Chromosome import Chromosome
 from GeneticAlgorithm import geneticAlgorithm
 from BoardReader import BoardReader
+from TargetArea import TargetArea
 
 
 class GameManager:
@@ -76,6 +77,18 @@ class GameManager:
         for i in range(geneticAlgorithm.chromosomeNumber):
             GameManager.players[i].chromosome= Chromosome.chromosomes[i]
 
+    def LoadTargetAreas(self):
+        width = 25
+        height = 25
+        targetStart=TargetArea((200, 20, 200), 2.5 * GameManager.tileSize - width/2, 5.5 * GameManager.tileSize - height/2,width, height)
+        target2=TargetArea((200, 20, 200), 5 * GameManager.tileSize - width/2, 9.5 * GameManager.tileSize - height/2,width, height)
+        target3=TargetArea((200, 20, 200), 15 * GameManager.tileSize - width/2, 4.7 * GameManager.tileSize - height/2,width, height)
+        targetEnd=TargetArea((200, 20, 200), 18 * GameManager.tileSize - width/2, 5 * GameManager.tileSize - height/2,width, height)
+        Chromosome.targetAreas.append(targetStart)
+        Chromosome.targetAreas.append(target2)
+        Chromosome.targetAreas.append(target3)
+        Chromosome.targetAreas.append(targetEnd)
+
     def LearnGame1(self):
         DISPLAY_SURFACE = pygame.display.set_mode((800, 600))
         pygame.display.set_caption('The worlds hardest game GA edition')
@@ -85,6 +98,7 @@ class GameManager:
         self.LoadEnemies()
         Chromosome.CreateSetOfChromosomes()
         self.LoadChromosomes()
+        self.LoadTargetAreas()
         GA=GeneticAlgorithm()
 
         gameIsRunning = True
@@ -103,7 +117,7 @@ class GameManager:
                 player.previousPosition=prevPos
                 player.OnUpdate(GameManager.collidingObjects)
                 if player.chromosome.killed:
-                    GameManager.deadPlayers.append(self)
+                    GameManager.deadPlayers.append(player)
                 player.ResolveCollisions(GameManager.collidingObjects)
                 player.Render(DISPLAY_SURFACE)
 
@@ -115,9 +129,12 @@ class GameManager:
                 GameManager.players.remove(dead)
             GameManager.deadPlayers.clear()
 
+            for tar in Chromosome.targetAreas:
+                tar.Render(DISPLAY_SURFACE)
+
             Chromosome.UpdateIterator()
             if Chromosome.IsEndOfGeneration():
-               # GA.Update()
+                GA.Update(GameManager.players)
                 self.LoadEnemies()
                 self.LoadPlayersComputer()
                 self.LoadChromosomes()

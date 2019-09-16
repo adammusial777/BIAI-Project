@@ -31,7 +31,7 @@ class Chromosome:
         self.isAlive=True
         self.killed=False
         self.winner=False
-        self.iteratorOfAreas=0
+        self.iteratorOfAreas=1
         #Chromosome.chromosomes.append(self)
         self.PopulationInit(Chromosome.genesNumber)
 
@@ -67,15 +67,15 @@ class Chromosome:
                 gen=self.GetRandomDirection()
 
 
-    def  CalculateFitness(self, gameObject):
+    def  CalculateFitness(self, player):
         distanceToTarget=0
-        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(gameObject):
-            self.fitness+=self.iteratorOfAreas/Chromosome.targetAreas.__len__()     #lub =
+        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(player):
+            self.fitness=self.iteratorOfAreas/Chromosome.targetAreas.__len__()     #lub +=
             self.iteratorOfAreas+=1
             if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
                 self.winner=True
         else:
-            distanceToTarget= 1/(Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(gameObject)+1)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
+            distanceToTarget= 1/(Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(player)+1)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
             if self.killed:
                 distanceToTarget*=0.9
                 self.killed=False
