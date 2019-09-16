@@ -118,6 +118,7 @@ class GameManager:
                 player.OnUpdate(GameManager.collidingObjects)
                 if player.chromosome.killed:
                     GameManager.deadPlayers.append(player)
+                    player.chromosome.playerEndRect=player.rect
                 player.ResolveCollisions(GameManager.collidingObjects)
                 player.Render(DISPLAY_SURFACE)
 
@@ -129,12 +130,17 @@ class GameManager:
                 GameManager.players.remove(dead)
             GameManager.deadPlayers.clear()
 
+
             for tar in Chromosome.targetAreas:
                 tar.Render(DISPLAY_SURFACE)
 
+
+
             Chromosome.UpdateIterator()
             if Chromosome.IsEndOfGeneration():
-                GA.Update(GameManager.players)
+                for player in GameManager.players:
+                    player.chromosome.playerEndRect=player.rect
+                GA.Update()
                 self.LoadEnemies()
                 self.LoadPlayersComputer()
                 self.LoadChromosomes()

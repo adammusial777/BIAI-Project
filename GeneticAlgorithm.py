@@ -8,17 +8,17 @@ class GeneticAlgorithm:
         self.chromosomeNumber=100
         self.fitnessSum=0.0
 
-    def Update(self, players):
-        self.Fitness(players)
+    def Update(self):
+        self.Fitness()
         Chromosome.chromosomes.sort(key=lambda x: x.fitness, reverse=True)
         self.CalculateFitnessSum()
         self.Selection()
         self.Mutate()
         self.NextGenerationGenes()
         
-    def Fitness(self, players):
-        for i in range(self.chromosomeNumber):
-            Chromosome.chromosomes[i].CalculateFitness(players[i])
+    def Fitness(self):
+        for chrom in Chromosome.chromosomes:
+            chrom.CalculateFitness()
 
     def CalculateFitnessSum(self):
         self.fitnessSum=0.0
@@ -40,7 +40,7 @@ class GeneticAlgorithm:
             newChromosomes.append(copy.deepcopy(parent))
 
         Chromosome.chromosomes=newChromosomes
-        print(Chromosome.chromosomes[0].fitness)
+       # print(Chromosome.chromosomes[0].fitness)
 
     def NextGenerationGenes(self):
         Chromosome.genesNumber+=10

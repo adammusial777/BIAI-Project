@@ -1,5 +1,5 @@
 import random
-
+import pygame
 
 class Chromosome:
     genesIterator=0
@@ -32,6 +32,8 @@ class Chromosome:
         self.killed=False
         self.winner=False
         self.iteratorOfAreas=1
+
+        self.playerEndRect= pygame.rect.Rect(0, 0, 0, 0)
         #Chromosome.chromosomes.append(self)
         self.PopulationInit(Chromosome.genesNumber)
 
@@ -67,15 +69,18 @@ class Chromosome:
                 gen=self.GetRandomDirection()
 
 
-    def  CalculateFitness(self, player):
-        distanceToTarget=0
-        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(player):
-            self.fitness=self.iteratorOfAreas/Chromosome.targetAreas.__len__()     #lub +=
+    def  CalculateFitness(self):
+        distanceToTarget=0.0
+        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(self.playerEndRect):
+            self.fitness=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())     #lub +=
             self.iteratorOfAreas+=1
             if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
                 self.winner=True
         else:
-            distanceToTarget= 1/(Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(player)+1)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
+            valInTargetArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
+            distaneValToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
+            distanceToTarget= distaneValToTarget * valInTargetArea
+           # print(distaneValToTarget)
             if self.killed:
                 distanceToTarget*=0.9
                 self.killed=False
