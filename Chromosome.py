@@ -3,28 +3,36 @@ import random
 
 class Chromosome:
     genesIterator=0
-    genesNumber=30
+    genesNumber=50
     chromosomes=[]
     mutationRate=0.7
     targetAreas=[]
+    chromosomeNumber=100
 
     @staticmethod
     def UpdateIterator():
         Chromosome.genesIterator += 1
+
+    @staticmethod
+    def IsEndOfGeneration():
         if Chromosome.genesIterator == Chromosome.genesNumber:
             Chromosome.genesIterator = 0
+            return True
+        return False
+
+    @staticmethod
+    def CreateSetOfChromosomes():
+        for i in range(Chromosome.chromosomeNumber):
+            Chromosome.chromosomes.append(Chromosome())
 
     def __init__(self):
-        self.genes=[] #jako lista genów (gen jako pozycja? zestaw genów jako trasa pozycji do celu?)
-        self.fitness= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
+        self.genes=[] 
+        self.fitness= 0.0 
         self.isAlive=True
         self.killed=False
         self.winner=False
         self.iteratorOfAreas=0
-
-
-        Chromosome.chromosomes.append(self)
-        
+        #Chromosome.chromosomes.append(self)
         self.PopulationInit(Chromosome.genesNumber)
 
     def GetRandomDirection(self):
@@ -70,6 +78,7 @@ class Chromosome:
             distanceToTarget= 1/(Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(gameObject)+1)*(self.iteratorOfAreas/Chromosome.targetAreas.__len__())
             if self.killed:
                 distanceToTarget*=0.9
+                self.killed=False
             self.fitness=distanceToTarget   
 
     def IncreaseGenes(self):

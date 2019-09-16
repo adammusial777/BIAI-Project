@@ -3,7 +3,7 @@ from pygame.locals import *
 from DeltaTime import DeltaTime
 from Player import Player
 from PlayerComputer import PlayerComputer
-#from PlayerComputer import PlayerComputer
+from GeneticAlgorithm import GeneticAlgorithm
 from Enemy import Enemy
 from Collider import Collider
 from Chromosome import Chromosome
@@ -18,16 +18,23 @@ class GameManager:
     enemies = []
     board = []
     collidingObjects = []
+    deadPlayers=[]
     tileSize = 40
 
     # grid
 
     def Start(self):
         pygame.init()
-        self.LearnGame()
+        self.LearnGame1()
         #self.PlayGame()
 
     def LoadLevel(self):
+        # edit
+        boardReader = BoardReader()
+        GameManager.board = boardReader.ReadFile("Boards/Board1.txt")
+
+    def LoadEnemies(self):
+        GameManager.enemies.clear()
         enemyColliderWidth = 12
         enemyColliderHeight = 12
 
@@ -44,10 +51,6 @@ class GameManager:
         GameManager.enemies.append(enemy3)
         GameManager.enemies.append(enemy4)
 
-        # edit
-        boardReader = BoardReader()
-        GameManager.board = boardReader.ReadFile("Boards/Board1.txt")
-
     def LoadPlayers(self):
         playerColliderWidth = 25
         playerColliderHeight = 25
@@ -63,25 +66,32 @@ class GameManager:
     def LoadPlayersComputer(self):
         playerColliderWidth = 25
         playerColliderHeight = 25
+        GameManager.players.clear()
         for i in range(geneticAlgorithm.chromosomeNumber):
             newPlayer = PlayerComputer((255, 0, 0), 2.5 * GameManager.tileSize - playerColliderWidth/2, 5.5 * GameManager.tileSize - playerColliderHeight/2,
                 playerColliderWidth, playerColliderHeight)
             GameManager.players.append(newPlayer)
 
-    def LearnGame(self):
+    def LoadChromosomes(self):
+        for i in range(geneticAlgorithm.chromosomeNumber):
+            GameManager.players[i].chromosome= Chromosome.chromosomes[i]
+
+    def LearnGame1(self):
         DISPLAY_SURFACE = pygame.display.set_mode((800, 600))
         pygame.display.set_caption('The worlds hardest game GA edition')
 
         self.LoadPlayersComputer()
         self.LoadLevel()
-
+        self.LoadEnemies()
+        Chromosome.CreateSetOfChromosomes()
+        self.LoadChromosomes()
+        GA=GeneticAlgorithm()
 
         gameIsRunning = True
         while gameIsRunning:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     gameIsRunning = False
-
             DeltaTime.GetDeltaTime()
             DISPLAY_SURFACE.fill((0, 0, 0))
 
@@ -92,6 +102,8 @@ class GameManager:
                 prevPos=(player.rect.x,player.rect.y)
                 player.previousPosition=prevPos
                 player.OnUpdate(GameManager.collidingObjects)
+                if player.chromosome.killed:
+                    GameManager.deadPlayers.append(self)
                 player.ResolveCollisions(GameManager.collidingObjects)
                 player.Render(DISPLAY_SURFACE)
 
@@ -99,7 +111,17 @@ class GameManager:
                 enemy.OnUpdate()
                 enemy.Render(DISPLAY_SURFACE)
 
+            for dead in GameManager.deadPlayers:
+                GameManager.players.remove(dead)
+            GameManager.deadPlayers.clear()
+
             Chromosome.UpdateIterator()
+            if Chromosome.IsEndOfGeneration():
+               # GA.Update()
+                self.LoadEnemies()
+                self.LoadPlayersComputer()
+                self.LoadChromosomes()
+
             pygame.display.update()
             DeltaTime.clock.tick(DeltaTime.framerate)
 
@@ -147,6 +169,7 @@ class GameManager:
 
         self.LoadPlayers()
         self.LoadLevel()
+        self.LoadEnemies()
 
         gameIsRunning = True
         while gameIsRunning:
