@@ -5,7 +5,7 @@ class Chromosome:
     genesIterator=0
     genesNumber=50
     chromosomes=[]
-    mutationRate=0.9
+    mutationRate=0.96
     targetAreas=[]
     chromosomeNumber=100
 
@@ -25,10 +25,14 @@ class Chromosome:
         for i in range(Chromosome.chromosomeNumber):
             Chromosome.chromosomes.append(Chromosome())
 
+    @staticmethod
+    def ResetChromosomes():
+        for chrom in Chromosome.chromosomes:
+            chrom.iteratorOfAreas=1
+
     def __init__(self):
         self.genes=[] 
         self.fitness= 0.0 
-        self.isAlive=True
         self.killed=False
         self.winner=False
         self.iteratorOfAreas=1
@@ -68,22 +72,22 @@ class Chromosome:
             if rand> Chromosome.mutationRate:
                 self.genes[i]=self.GetRandomDirection()
 
+
+
     def  CalculateFitness(self):
-        distanceToTarget=0.0
-        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(self.playerEndRect):
-            self.iteratorOfAreas+=1
-            if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
-                self.winner=True
-            distanceToTarget=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())     #lub +=
-     #   else:
-        valInTargetArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
-        distaneValToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
-        distanceToTarget+= distaneValToTarget * valInTargetArea + (self.iteratorOfAreas)/float(Chromosome.targetAreas.__len__())
-        # print(distaneValToTarget)
+        self.fitness=0.0
+        fitnessInArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
+        print(self.iteratorOfAreas)
+        print(fitnessInArea)
+        distanceToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
+        print(distanceToTarget)
+        self.fitness= distanceToTarget + fitnessInArea
         if self.killed:
-            distanceToTarget*=0.9
+            #self.fitness*=0.9998
             self.killed=False
-        self.fitness+=distanceToTarget   
+            print(self.killed)
+        print(self.fitness) 
+        print(self.playerEndRect)
 
     def IncreaseGenes(self):
         i=self.genes.__len__()
@@ -91,3 +95,8 @@ class Chromosome:
             position = self.GetRandomDirection()
             self.genes.append(position)
 
+    def Update(self, rect):
+        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(rect):
+            self.iteratorOfAreas+=1
+            if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
+                self.winner=True

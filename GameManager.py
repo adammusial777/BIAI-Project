@@ -90,6 +90,9 @@ class GameManager:
         Chromosome.targetAreas.append(target2)
         Chromosome.targetAreas.append(target3)
         Chromosome.targetAreas.append(targetEnd)
+        print("XD t1 coord")
+        print(5 * GameManager.tileSize - width/2)           #187,5
+        print(9.5 * GameManager.tileSize - height/2)  #367,5
 
     def LearnGame1(self):
         DISPLAY_SURFACE = pygame.display.set_mode((800, 600))
@@ -118,6 +121,7 @@ class GameManager:
                 prevPos=(player.rect.x,player.rect.y)
                 player.previousPosition=prevPos
                 player.OnUpdate(GameManager.collidingObjects)
+                player.chromosome.Update(player.rect)
                 if player.chromosome.killed:
                     GameManager.deadPlayers.append(player)
                     player.chromosome.playerEndRect=player.rect
