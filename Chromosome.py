@@ -29,6 +29,10 @@ class Chromosome:
     def ResetChromosomes():
         for chrom in Chromosome.chromosomes:
             chrom.iteratorOfAreas=1
+            chrom.fitness=0
+            chrom.killed=False
+            chrom.iteratorOfAreas=1
+            chrom.playerEndRect= pygame.rect.Rect(0, 0, 0, 0)
 
     def __init__(self):
         self.genes=[] 
@@ -77,21 +81,22 @@ class Chromosome:
     def  CalculateFitness(self):
         self.fitness=0.0
         fitnessInArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
-        print(self.iteratorOfAreas)
-        print(fitnessInArea)
+        #print(self.iteratorOfAreas)
+       # print(fitnessInArea)
         distanceToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
-        print(distanceToTarget)
+        #print(distanceToTarget)
         self.fitness= distanceToTarget + fitnessInArea
         if self.killed:
             #self.fitness*=0.9998
             self.killed=False
-            print(self.killed)
-        print(self.fitness) 
-        print(self.playerEndRect)
+            #print(self.killed)
+        #print(self.fitness) 
+       # print(self.playerEndRect)
 
     def IncreaseGenes(self):
-        i=self.genes.__len__()
-        for i in range(Chromosome.genesNumber):
+        print(self.genes.__len__())
+        print(Chromosome.genesNumber)
+        for i in range(self.genes.__len__(), Chromosome.genesNumber, 1):
             position = self.GetRandomDirection()
             self.genes.append(position)
 
