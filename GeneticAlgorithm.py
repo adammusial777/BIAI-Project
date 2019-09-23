@@ -1,25 +1,61 @@
 import random
-import Position as Pos
+import copy
+from Chromosome import *
 
 class GeneticAlgorithm:
 
     def __init__(self):
         self.chromosomeNumber=100
+        self.fitnessSum=0.0
 
-    def Mutate(self):
-        pass
-
+    def Update(self):
+        self.Fitness()
+        Chromosome.chromosomes.sort(key=lambda x: x.fitness, reverse=True)
+        self.CalculateFitnessSum()
+        self.Selection()
+        self.Mutate()
+        self.NextGenerationGenes()
+        Chromosome.ResetChromosomes()
+        
     def Fitness(self):
-        pass
+        for chrom in Chromosome.chromosomes:
+            chrom.CalculateFitness()
 
-    def Crossover(self):
-        pass
+    def CalculateFitnessSum(self):
+        self.fitnessSum=0.0
+        for chrom in Chromosome.chromosomes:
+            self.fitnessSum+=chrom.fitness
+    
+    def SelectParent(self):
+        rand = random.uniform(0,self.fitnessSum)
+        rand = random.uniform(0,rand)
+
+        runningSum=0
+        for i in range(0, Chromosome.chromosomes.__len__(), 1):
+            runningSum+=Chromosome.chromosomes[i].fitness
+            if(runningSum>=rand):
+                return Chromosome.chromosomes[i]
 
     def Selection(self):
-        pass
+        newChromosomes=[]
+        for chrom in Chromosome.chromosomes:
+            parent=self.SelectParent()
+            newChromosomes.append(copy.deepcopy(parent))
 
-    def TheBestSelection(self):
-        pass
+        Chromosome.chromosomes=newChromosomes
 
-geneticAlgorithm=GeneticAlgorithm()
+    def NextGenerationGenes(self):
+        if Chromosome.genesNumber<300:
+            Chromosome.genesNumber+=10
+            
+            for chrom in Chromosome.chromosomes:
+                chrom.IncreaseGenes()
 
+    def Mutate(self):
+        for chrom in Chromosome.chromosomes:
+            chrom.MutateGenes()
+
+    def TheWinnerChromosome(self):
+        return next(x for x in Chromosome.chromosomes if x.winner==True )
+
+geneticAlgorithm = GeneticAlgorithm()

@@ -1,44 +1,102 @@
 import random
-import Position as Pos
+import pygame
 
 class Chromosome:
     genesIterator=0
-    genesNumber=100
+    genesNumber=50
+    chromosomes=[]
+    mutationRate=0.96
+    targetAreas=[]
+    chromosomeNumber=100
 
     @staticmethod
     def UpdateIterator():
-        Chromosome.genesIterator+=1
+        Chromosome.genesIterator += 1
+
+    @staticmethod
+    def IsEndOfGeneration():
         if Chromosome.genesIterator == Chromosome.genesNumber:
-            Chromosome.genesIterator=0
+            Chromosome.genesIterator = 0
+            return True
+        return False
+
+    @staticmethod
+    def CreateSetOfChromosomes():
+        for i in range(Chromosome.chromosomeNumber):
+            Chromosome.chromosomes.append(Chromosome())
+
+    @staticmethod
+    def ResetChromosomes():
+        for chrom in Chromosome.chromosomes:
+            chrom.iteratorOfAreas=1
 
     def __init__(self):
-        self.genes=[] #jako lista genów (gen jako pozycja? zestaw genów jako trasa pozycji do celu?)
-        self.rating= 0.0 #ocena skuteczności (na podstawie odległości od pola końcowego i zebranych monet?)
+        self.genes=[] 
+        self.fitness= 0.0 
+        self.killed=False
+        self.winner=False
+        self.iteratorOfAreas=1
+
+        self.playerEndRect= pygame.rect.Rect(0, 0, 0, 0)
+        #Chromosome.chromosomes.append(self)
         self.PopulationInit(Chromosome.genesNumber)
 
+    def GetRandomDirection(self):
+        position = (0, 0)
+        randomValX = random.random()
+        if randomValX < 0.4:
+            position = (-1, position[1])
+        elif randomValX < 0.6:
+            position = (0, position[1])
+        else:
+            position = (1, position[1])
+
+        randomValY = random.random()
+        if randomValY < 0.4:
+            position = (position[0], -1)
+        elif randomValY < 0.6:
+            position = (position[0], 0)
+        else:
+            position = (position[0], 1)
+
+        return position
+
     def PopulationInit(self, number):
-        
         for i in range(number):
-            position=Pos.Position(0,0)
-            randomValX=random.random()
-            #print(randomValX)
-            if randomValX<0.4:
-                position.x=-1
-            elif randomValX<0.6:
-                position.x=0
-            else:
-                position.x=1
-
-            randomValY=random.random()
-            if randomValY<0.4:
-                position.y=-1
-            elif randomValY<0.6:
-                 position.y=0
-            else:
-                position.y=1
-
+            position = self.GetRandomDirection()
             self.genes.append(position)
 
-"""     def IncrementGenes(self):
-        genesNumber=5
-        self.PopulationInit(genesNumber) """
+    def MutateGenes(self):
+        for i in range(self.genes.__len__()):
+            rand = random.random()
+            if rand> Chromosome.mutationRate:
+                self.genes[i]=self.GetRandomDirection()
+
+
+
+    def  CalculateFitness(self):
+        self.fitness=0.0
+        fitnessInArea=self.iteratorOfAreas/float(Chromosome.targetAreas.__len__())
+        print(self.iteratorOfAreas)
+        print(fitnessInArea)
+        distanceToTarget=1/float((Chromosome.targetAreas[self.iteratorOfAreas].CalculateDistance(self.playerEndRect)+1))
+        print(distanceToTarget)
+        self.fitness= distanceToTarget + fitnessInArea
+        if self.killed:
+            #self.fitness*=0.9998
+            self.killed=False
+            print(self.killed)
+        print(self.fitness) 
+        print(self.playerEndRect)
+
+    def IncreaseGenes(self):
+        i=self.genes.__len__()
+        for i in range(Chromosome.genesNumber):
+            position = self.GetRandomDirection()
+            self.genes.append(position)
+
+    def Update(self, rect):
+        if Chromosome.targetAreas[self.iteratorOfAreas].IsAreaReached(rect):
+            self.iteratorOfAreas+=1
+            if self.iteratorOfAreas == Chromosome.targetAreas.__len__():
+                self.winner=True
