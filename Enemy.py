@@ -23,7 +23,7 @@ class Enemy(GameObject):
             self.speed *= -1
             self.rect.x = 580
             self.leftDirection = True
-        speedByTime = self.speed #* DeltaTime.GetDeltaTime()
+        speedByTime = self.speed
         self.rect.x += speedByTime
 
     def MoveLeft(self):
